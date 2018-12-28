@@ -1,0 +1,23 @@
+
+    <h1>Twitter</h1>
+    {% if posts %}
+        {% for post in posts %}
+            <h2>{{ post.author }}</h2>
+            <h3>
+                <p>{{ post.body }}</p>
+            </h3>
+            <p class="date">
+                Published {{ post.date }} by {{ post.author }}
+            </p>
+        {% endfor %}
+    {% else %}
+        <h2>
+            <p>No posts are avilable</p>
+        </h2>
+
+    {% endif %}
+
+
+
+
+
