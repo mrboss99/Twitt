@@ -99,8 +99,16 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
+
+
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'amir.honami@gmail.com'
+EMAIL_HOST_PASSWORD = 'amir1378'
+EMAIL_PORT = 587
+EMAIL_USF_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 TIME_ZONE = 'UTC'
 
@@ -125,3 +133,29 @@ LOGOUT_URL = 'logout'
 MEDIA_URL = '/media/'  # is the base URL to serve the media files uploaded by users,
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')  # and MEDIA_ROOT is the local path where they reside. We build the path
 # dynamically relative to our project path to make our code more generic.
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'Log.authentication.EmailAuthBackend',
+]
+
+# After build URL for followers(list and detail followers)
+"""
+We will use the user_detail URL pattern to generate the canonical
+URL for users. You have already defined a get_absolute_url() method in
+a model to return the canonical URL for each object. Another way
+to specify an URL for a model is by adding the ABSOLUTE_URL_OVERRIDES
+setting to your project.
+from django.urls import reverse_lazy
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.user': lambda u: reverse_lazy('user_detail',
+                                        args=[u.username])
+"""
+from django.urls import reverse_lazy
+
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.user': lambda u: reverse_lazy('user_detail',
+                                        args=[u.username])
+}
+
+THUMBNAIL_DEBUG = True
