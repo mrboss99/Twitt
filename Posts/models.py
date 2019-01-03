@@ -1,3 +1,4 @@
+from django.template.defaultfilters import slugify
 from django.urls import reverse
 from django.utils import timezone
 from django.conf import settings
@@ -12,6 +13,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     date = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True, db_index=True)
+    slug = models.SlugField(max_length=200, blank=True)
     STATUS_CHOICE = (
         ('draft', 'Draft'),
         ('publish', 'Publish')
@@ -30,6 +32,10 @@ class Post(models.Model):
     class Meta:
         ordering = ('-date',)
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super(Post, self).save(*args, **kwargs)
 
 
 class Comment(models.Model):

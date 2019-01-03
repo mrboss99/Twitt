@@ -66,3 +66,11 @@ def post_create(request):
         return render(request,
                       'Posts/post/create.html',
                       {'form': form})
+
+
+def post_detail(request, id, slug):
+    post = get_object_or_404(Post, id=id, slug=slug)
+    return render(request,
+                  'Posts/post/detail',
+                  {'section': 'post',
+                   'image': post})
