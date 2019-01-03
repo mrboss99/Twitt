@@ -18,10 +18,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from Posts import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('twitter/', include('Posts.urls')),
-    path('accounts/', include('Log.urls'))
+    path('accounts/', include('Log.urls')),
+    path('create/post/', views.post_create, name='create')
 ]
 
 if settings.DEBUG:
@@ -29,6 +32,3 @@ if settings.DEBUG:
                           document_root=settings.MEDIA_ROOT)
     # The static() helper function is suitable for development, but not for production use. Never serve your static
     # files  with Django in a production environment.
-
-
-

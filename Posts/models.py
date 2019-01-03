@@ -1,21 +1,25 @@
 from django.urls import reverse
 from django.utils import timezone
-
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+from django.forms import ModelForm
 
 
 class Post(models.Model):
-    body = models.TextField()
+    body = models.TextField(blank=True)
     title = models.CharField(max_length=200)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     date = models.DateTimeField(default=timezone.now)
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
     STATUS_CHOICE = (
         ('draft', 'Draft'),
         ('publish', 'Publish')
     )
     status = models.CharField(max_length=10, choices=STATUS_CHOICE, default='draft')
+    users_like = models.ManyToManyField(settings.AUTH_USER_MODEL,
+                                        related_name='posts_like',
+                                        blank=True)
 
     def get_absolute_url(self):
         return reverse('Posts:post_detail',
@@ -25,6 +29,7 @@ class Post(models.Model):
 
     class Meta:
         ordering = ('-date',)
+
 
 
 class Comment(models.Model):
