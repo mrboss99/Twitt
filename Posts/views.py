@@ -57,8 +57,8 @@ def post_create(request):
             messages.success(request, 'Post added successfully')
 
             # redirect to new created item detail view
-            return redirect(new_item.get_absolute_url())
 
+            return redirect(new_item.get_absolute_url())
         else:
             # build form with data provided by the Twitter via GET
             form = PostForm(data=request.GET)
